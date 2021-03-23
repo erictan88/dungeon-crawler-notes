@@ -4,28 +4,30 @@ namespace myTiles {
     export const transparency16 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile1 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile2 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
             case "level1":
-            case "level1":return tiles.createTilemap(hex`140010000e0707070707070707060e07070707070707070605140f0f0f0f0f0f0b0105101010101010101001050f0f0f0f0f0f0f0f0105101010101010101001050f0f0f0f0f0f0f0f0105101010100b10101001050f0f0f0f0f0f0f0f0105101010101010101001050f0f0f0f0f150f0f0105101010101010101001050f0f0f0f0f0f0f0d010510101010101010100104030303030303030302040303030303030303020e0707070713070707060e07070707070707070605140909090909090b01050d11111111111111010509090909090a09090105111111111111111101050909090909090909010811111111111111110105090909090909090901051111110b111111110105090909090909090901051111111111111111010512090909090909090108111111111111110c010403030303030303030204030303030303030302`, img`
-22222222222222222222
-2.......222........2
-2........22........2
-2........22........2
-2........22........2
-2........22........2
-2........22........2
-22222222222222222222
-22222222222222222222
-2........22........2
-2........22........2
-2........22........2
-2........22........2
-2........22........2
-2........22........2
-22222222222222222222
-`, [myTiles.transparency16,sprites.dungeon.greenOuterEast0,sprites.dungeon.greenOuterSouthWest,sprites.dungeon.greenOuterSouth0,sprites.dungeon.greenOuterSouthEast,sprites.dungeon.greenOuterWest1,sprites.dungeon.greenOuterNorthEast,sprites.dungeon.greenOuterNorth0,sprites.dungeon.greenOuterWest2,sprites.dungeon.floorDark0,sprites.dungeon.floorDark3,sprites.dungeon.chestClosed,sprites.dungeon.stairEast,sprites.dungeon.stairWest,sprites.dungeon.greenOuterNorthWest,sprites.dungeon.floorLight2,sprites.dungeon.darkGroundCenter,sprites.dungeon.floorLight0,sprites.dungeon.stairSouth,sprites.dungeon.greenSwitchUp,sprites.dungeon.stairLarge,sprites.dungeon.floorLight3], TileScale.Sixteen);
+            case "level1":return tiles.createTilemap(hex`280010000e0707070707070707060e070707070707070706000000000000000000000000000000000000000017150f0f0f0f0f0f0b01051010101010101010010000000000000000000000000000000000000000170f0f0f0f0f0f0f0f01051010101010101010010000000000000000000000000000000000000000170f0f0f0f0f0f0f0f0105101010100b10100b010000000000000000000000000000000000000000170f0f0f0f0f0f0f0f16111111111111111111010000000010000000000000000000000000000000170f0f0f0f0f0f0f0f01051010101010101010010000000000000000000000000000000000000000170f0f0f0f0f0f0f0f01051010101010101010010000000000000000000000000000000000000000041818181818181818020418181818031818180200000000000000000000000000000000000000000e0707070713070707060e070707070707070706000000000000000000000000000000000000000017140909090909090b01050d111111111111110100000000000000000000000000000000000000001709090909090a0909010511111111111111110100000000000000000000000000000000000000001709090909090909090108111111111111111101000000000000000000000000000000000000000017090909090909090901051111110b11111111010000000000000000000000000000000000000000170909090909090909010511111111111111110100000000000000000000000000000000000000001712090909090909090108111111111111110c01000000000000000000000000000000000000000004181818181818181802041818181818181818020000000000000000000000000000000000000000`, img`
+22222222222222222222....................
+2........22........2....................
+2........22........2....................
+2........22........2....................
+2........2.........2....................
+2..................2....................
+2..................2....................
+22222222222222222222....................
+22222222222222222222....................
+2.......222........2....................
+2........22........2....................
+2........22........2....................
+2........22........2....................
+2........22........2....................
+2........22........2....................
+22222222222222222222....................
+`, [myTiles.transparency16,sprites.dungeon.greenOuterEast0,sprites.dungeon.greenOuterSouthWest,sprites.dungeon.greenOuterSouth0,sprites.dungeon.greenOuterSouthEast,sprites.dungeon.greenOuterWest1,sprites.dungeon.greenOuterNorthEast,sprites.dungeon.greenOuterNorth0,sprites.dungeon.greenOuterWest2,sprites.dungeon.floorDark0,sprites.dungeon.floorDark3,sprites.dungeon.chestClosed,sprites.dungeon.stairEast,sprites.dungeon.stairWest,sprites.dungeon.greenOuterNorthWest,sprites.dungeon.floorLight2,sprites.dungeon.darkGroundCenter,sprites.dungeon.floorLight0,sprites.dungeon.stairSouth,sprites.dungeon.greenSwitchUp,sprites.dungeon.stairLarge,sprites.dungeon.floorLight3,sprites.dungeon.greenOuterEast1,sprites.dungeon.greenOuterWest0,sprites.dungeon.greenOuterSouth1], TileScale.Sixteen);
         }
         return null;
     })
@@ -35,6 +37,8 @@ namespace myTiles {
             case "transparency16":return transparency16;
             case "myTile":
             case "tile1":return tile1;
+            case "myTile0":
+            case "tile2":return tile2;
         }
         return null;
     })

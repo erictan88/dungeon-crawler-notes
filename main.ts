@@ -2,24 +2,114 @@ namespace SpriteKind {
     export const Objects = SpriteKind.create()
     export const StairA_kind = SpriteKind.create()
     export const Stairs = SpriteKind.create()
+    export const Chest01_Kind = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     Directions = 12
 })
+// Box to get Pick Axe
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
-    if (Hero.tileKindAt(TileDirection.Top, sprites.dungeon.chestClosed)) {
+    if (Hero.tileKindAt(TileDirection.Right, sprites.dungeon.greenOuterEast1)) {
+        if (Object_List == 1) {
+            if (game.ask("Break Wall?")) {
+                tiles.setTileAt(location, sprites.dungeon.floorLight2)
+                tiles.setWallAt(location, false)
+            }
+        }
+    }
+    if (Hero.tileKindAt(TileDirection.Bottom, sprites.dungeon.greenOuterSouth0)) {
+        if (Object_List == 1) {
+            if (game.ask("Break Wall?")) {
+                tiles.setTileAt(location, sprites.dungeon.floorLight0)
+                tiles.setWallAt(location, false)
+            }
+        }
+    }
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    Attack = 1
+    pause(500)
+    Attack = 0
+})
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    Directions = 9
+})
+function SetupVariable () {
+    // 0 = Nothing
+    // 1 = Pick Axe
+    // 2 = Key
+    Object_List = 0
+    // 0 = Nothing
+    // 1 = Red
+    // 2 = Green
+    // 3 = Blue
+    Key_Colour = 0
+}
+// Tilemaps will have locations variables
+// 
+// Sprites can have a name each
+// 
+// Thus we are using both tiles and sprites of the same object
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
+    if (Hero.overlapsWith(Chest01)) {
         if (game.ask("Open Box?")) {
             tiles.setTileAt(location, assets.tile`myTile`)
-            game.showLongText("You received a Key", DialogLayout.Bottom)
+            Chest01.setImage(assets.tile`myTile`)
+            game.showLongText("You received a Pick Axe", DialogLayout.Bottom)
+            Axe = sprites.create(img`
+                .......ff.......
+                .........ff.....
+                ...........f....
+                ..........ff....
+                ........ff..f...
+                ......ff....f...
+                ....ff.....f....
+                ...f.......f....
+                ..........f.....
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                ................
+                `, SpriteKind.Objects)
+            tiles.placeOnTile(Axe, location)
+            Axe.follow(Hero, 500)
+            Object_List = 1
+        }
+    }
+    // This chest gives u the keys for the next chest
+    if (Hero.overlapsWith(Chest02)) {
+        if (game.ask("Open Box?")) {
+            tiles.setTileAt(location, assets.tile`myTile`)
+            Chest02.setImage(assets.tile`myTile`)
+            game.showLongText("Red Key", DialogLayout.Bottom)
             Key = sprites.create(img`
                 ................
-                ................
-                ...8888.........
-                ..8888888888....
-                ..88..8...8.8...
-                ..88..8...8.8...
-                ..88888.....8...
-                ...888..........
+                ..22222.........
+                .2.....2........
+                .2.....2........
+                .2.....2222222..
+                .2.....2.....2..
+                .2.....2.....2..
+                ..22222.........
                 ................
                 ................
                 ................
@@ -45,18 +135,59 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                 ................
                 ................
                 `, SpriteKind.Objects)
+            Key_Colour = 1
             tiles.placeOnTile(Key, location)
             Key.follow(Hero, 500)
         }
     }
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    Attack = 1
-    pause(500)
-    Attack = 0
-})
-controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    Directions = 9
+    // This chest gives u the keys for the next chest
+    if (Hero.overlapsWith(Chest03)) {
+        if (Key_Colour == 1) {
+            if (game.ask("Open Box?")) {
+                tiles.setTileAt(location, assets.tile`myTile`)
+                Chest02.setImage(assets.tile`myTile`)
+                game.showLongText("Green Key", DialogLayout.Bottom)
+                Key = sprites.create(img`
+                    ................
+                    ..77777.........
+                    .7.....7........
+                    .7.....7........
+                    .7.....7777777..
+                    .7.....7.....7..
+                    .7.....7.....7..
+                    ..77777.........
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    ................
+                    `, SpriteKind.Objects)
+                tiles.placeOnTile(Key, location)
+                Key.follow(Hero, 500)
+            }
+        } else {
+            game.showLongText("You'll need the Red Key", DialogLayout.Bottom)
+        }
+    }
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     Directions = 3
@@ -64,20 +195,92 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Directions = 6
 })
+// destroy location, revealing stairs to Section 2
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight3, function (sprite, location) {
+    if (Object_List == 1) {
+        StairsA = sprites.create(sprites.dungeon.stairLarge, SpriteKind.Stairs)
+        tiles.placeOnTile(StairsA, tiles.getTileLocation(1, 1))
+        StairsA.z = 0
+        Axe.destroy()
+        Object_List = 0
+        tiles.setTileAt(location, sprites.dungeon.stairLarge)
+    }
+})
+function SetupObjects () {
+    Chest01 = sprites.create(img`
+        . . b b b b b b b b b b b b . . 
+        . b e 4 4 4 4 4 4 4 4 4 4 e b . 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e e 4 4 4 4 4 4 4 4 4 4 e e b 
+        b e e e e e e e e e e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b b b b b b b d d b b b b b b b 
+        c b b b b b b c c b b b b b b c 
+        c c c c c c b c c b c c c c c c 
+        b e e e e e c b b c e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b c e e e e e e e e e e e e c b 
+        b b b b b b b b b b b b b b b b 
+        . b b . . . . . . . . . . b b . 
+        `, SpriteKind.Objects)
+    tiles.placeOnTile(Chest01, tiles.getTileLocation(8, 1))
+    Chest02 = sprites.create(img`
+        . . b b b b b b b b b b b b . . 
+        . b e 4 4 4 4 4 4 4 4 4 4 e b . 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e e 4 4 4 4 4 4 4 4 4 4 e e b 
+        b e e e e e e e e e e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b b b b b b b d d b b b b b b b 
+        c b b b b b b c c b b b b b b c 
+        c c c c c c b c c b c c c c c c 
+        b e e e e e c b b c e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b c e e e e e e e e e e e e c b 
+        b b b b b b b b b b b b b b b b 
+        . b b . . . . . . . . . . b b . 
+        `, SpriteKind.Objects)
+    tiles.placeOnTile(Chest02, tiles.getTileLocation(15, 3))
+    Chest03 = sprites.create(img`
+        . . b b b b b b b b b b b b . . 
+        . b e 4 4 4 4 4 4 4 4 4 4 e b . 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+        b e e 4 4 4 4 4 4 4 4 4 4 e e b 
+        b e e e e e e e e e e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b b b b b b b d d b b b b b b b 
+        c b b b b b b c c b b b b b b c 
+        c c c c c c b c c b c c c c c c 
+        b e e e e e c b b c e e e e e b 
+        b e e e e e e e e e e e e e e b 
+        b c e e e e e e e e e e e e c b 
+        b b b b b b b b b b b b b b b b 
+        . b b . . . . . . . . . . b b . 
+        `, SpriteKind.Objects)
+    tiles.placeOnTile(Chest03, tiles.getTileLocation(18, 3))
+}
+// Stairs to Section 2
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairLarge, function (sprite, location) {
     if (Hero.overlapsWith(StairsA)) {
         scene.centerCameraAt(0, 184)
         tiles.placeOnTile(Hero, tiles.getTileLocation(1, 13))
-        tiles.placeOnTile(Key, tiles.getTileLocation(1, 13))
     }
 })
+// Stairs to Section 1
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairSouth, function (sprite, location) {
     if (Hero.overlapsWith(StairsB)) {
         scene.centerCameraAt(0, 0)
         tiles.placeOnTile(Hero, tiles.getTileLocation(1, 2))
-        tiles.placeOnTile(Key, tiles.getTileLocation(1, 2))
     }
 })
+// When sword is out, kill Ghost.
+// If sword not out, let ghost bounce back
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (Attack == 1) {
         otherSprite.destroy(effects.fire, 200)
@@ -90,11 +293,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         }
     }
 })
-let Attack = 0
+let StairsA: Sprite = null
+let Chest03: Sprite = null
 let Key: Sprite = null
+let Chest02: Sprite = null
+let Axe: Sprite = null
+let Chest01: Sprite = null
+let Key_Colour = 0
+let Attack = 0
+let Object_List = 0
 let Directions = 0
 let StairsB: Sprite = null
-let StairsA: Sprite = null
 let Hero: Sprite = null
 tiles.setTilemap(tilemap`level1`)
 info.setLife(3)
@@ -118,8 +327,8 @@ Hero = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(Hero, 100, 100)
 tiles.placeOnTile(Hero, tiles.getTileLocation(4, 4))
-StairsA = sprites.create(sprites.dungeon.stairLarge, SpriteKind.Stairs)
-tiles.placeOnTile(StairsA, tiles.getTileLocation(1, 1))
+Hero.z = 50
+scene.cameraFollowSprite(Hero)
 StairsB = sprites.create(sprites.dungeon.stairSouth, SpriteKind.Stairs)
 tiles.placeOnTile(StairsB, tiles.getTileLocation(1, 14))
 let myEnemy = sprites.create(img`
@@ -148,8 +357,11 @@ let myEnemy = sprites.create(img`
     ........................
     ........................
     `, SpriteKind.Enemy)
-tiles.placeOnTile(myEnemy, tiles.getTileLocation(1, 10))
+tiles.placeOnTile(myEnemy, tiles.getTileLocation(19, 4))
 myEnemy.follow(Hero, 30)
+Hero.z = 50
+SetupObjects()
+SetupVariable()
 forever(function () {
     if (Attack == 0) {
         if (Directions == 12) {
